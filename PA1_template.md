@@ -34,12 +34,12 @@ c. Create time series of average and median numbers of steps across each five-mi
 
 
 ```r
-intervals <- dimnames(table(data[,"interval"]))[[1]]
+Interval <- dimnames(table(data[,"interval"]))[[1]]
 averages <- NULL
-for (i in 1:length(intervals)) {
-  averages <- c(averages, mean(data[data[,"interval"]==intervals[i],"steps"], na.rm = TRUE))
+for (i in 1:length(Interval)) {
+  averages <- c(averages, mean(data[data[,"interval"]==Interval[i],"steps"], na.rm = TRUE))
 }
-avesteps <- as.ts(averages)
+Avesteps <- as.ts(averages)
 ```
 
 ## What is mean total number of steps taken per day?
@@ -80,7 +80,7 @@ median(daysteps,na.rm = TRUE)
 
 
 ```r
-plot(intervals,avesteps,type = "l")
+plot(Interval,Avesteps,type = "l")
 ```
 
 ![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png) 
@@ -89,7 +89,7 @@ plot(intervals,avesteps,type = "l")
 
 
 ```r
-intervals[which(avesteps==max(avesteps))]
+Interval[which(Avesteps==max(Avesteps))]
 ```
 
 ```
@@ -128,7 +128,7 @@ b. For each row of the new dataset with a missing "steps" value, replace NA with
 ```r
 newdata <- data
 for (i in 1:length(stepindx)){
-  newdata[stepindx[i],"steps"] <- avesteps[which(newdata[stepindx[i],"interval"]==intervals)]  
+  newdata[stepindx[i],"steps"] <- Avesteps[which(newdata[stepindx[i],"interval"]==Interval)]  
 }
 ```
 
@@ -210,9 +210,9 @@ wkenddta <- newdata[which(dayfact=="weekend"),]
 # intervals <- dimnames(table(data[,"interval"]))[[1]]
 wkdayave <- NULL
 wkendave <- NULL
-for (i in 1:length(intervals)) {
-  wkdayave <- c(wkdayave, mean(wkdaydta[wkdaydta[,"interval"]==intervals[i],"steps"]))
-  wkendave <- c(wkendave, mean(wkenddta[wkenddta[,"interval"]==intervals[i],"steps"]))
+for (i in 1:length(Interval)) {
+  wkdayave <- c(wkdayave, mean(wkdaydta[wkdaydta[,"interval"]==Interval[i],"steps"]))
+  wkendave <- c(wkendave, mean(wkenddta[wkenddta[,"interval"]==Interval[i],"steps"]))
 }
 weekday <- as.ts(wkdayave)
 weekend <- as.ts(wkendave)
@@ -222,15 +222,15 @@ b. Create panel plot comparing the weekend and weekday averages
 
 X-label: Interval
 y-label: Number of steps
-top: weekend
-bottom: weekday
+top: Weekend
+bottom: Weekday
 
 
 ```r
 # 2 figures arranged in 2 rows
 par(mfrow=c(2,1))
-plot(intervals,weekend,main="weekend",type = "l")
-plot(intervals,weekday,main="weekday",type = "l")
+plot(Interval,weekend,main="Weekend",ylab="Number of steps",type = "l")
+plot(Interval,weekday,main="Weekday",ylab="Number of steps",type = "l")
 ```
 
 ![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png) 
