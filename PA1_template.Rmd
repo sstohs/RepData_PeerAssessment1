@@ -142,3 +142,34 @@ dayfact <- factor(dayofweek, levels, labels)
 ```
 
 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
+
+a. Create average numbers of steps taken at each 5-minute interval for weekdays and for weekend days
+
+```{r}
+wkdaydta <- newdata[which(dayfact=="weekday"),]
+wkenddta <- newdata[which(dayfact=="weekend"),]
+
+# intervals <- dimnames(table(data[,"interval"]))[[1]]
+wkdayave <- NULL
+wkendave <- NULL
+for (i in 1:length(intervals)) {
+  wkdayave <- c(wkdayave, mean(wkdaydta[wkdaydta[,"interval"]==intervals[i],"steps"]))
+  wkendave <- c(wkendave, mean(wkenddta[wkenddta[,"interval"]==intervals[i],"steps"]))
+}
+weekday <- as.ts(wkdayave)
+weekend <- as.ts(wkendave)
+```
+
+b. Create panel plot comparing the weekend and weekday averages
+
+X-label: Interval
+y-label: Number of steps
+top: weekend
+bottom: weekday
+
+```{r}
+# 2 figures arranged in 2 rows
+par(mfrow=c(2,1))
+plot(intervals,weekend,main="weekend",type = "l")
+plot(intervals,weekday,main="weekday",type = "l")
+```
